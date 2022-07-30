@@ -18,8 +18,8 @@ exports.viewAllProducts = async (req, res) => {
             $in: [qCategory],
           },
         })
-        .skip(3)
-        .limit(2);
+        .skip(2)
+        .limit(10);
     } else {
       products = await productModel.find();
     }

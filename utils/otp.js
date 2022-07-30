@@ -17,15 +17,6 @@ exports.generateOTP = (otp_length) => {
 
 exports.fast2sms = async ({ variables_values, contactNumber }, next) => {
   try {
-    // const res = await fast2sms.sendMessage({
-    //   authorization: process.env.API_KEY,
-    //   route: process.env.YOUR_ROUTE,
-    //   sender_id: process.env.DLT_SENDER_ID,
-    //   message: process.env.YOUR_MESSAGE_ID,
-    //   variables_values,
-    //   numbers: [contactNumber],
-    // });
-    // console.log(res);
     req.headers({
       authorization: process.env.API_KEY,
       "Content-Type": "application/json",
