@@ -2,7 +2,7 @@ require("dotenv").config();
 const { response } = require("express");
 const fast2sms = require("fast-two-sms");
 const { FAST2SMS } = require("../config");
-var unirest = require("unirest");
+const unirest = require("unirest");
 
 var req = unirest("POST", "https://www.fast2sms.com/dev/bulkV2");
 
