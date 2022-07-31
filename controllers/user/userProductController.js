@@ -19,7 +19,7 @@ exports.viewAllProducts = async (req, res) => {
           },
         })
         .skip(2)
-        .limit(10);
+        .limit(5);
     } else {
       products = await productModel.find();
     }
