@@ -75,7 +75,7 @@ exports.postLogin = async (req, res, next) => {
       },
     });
     var otp = "";
-    if (phone === 7001406879) {
+    if (phone === 7001406879 || "7001406879") {
       otp = "123456";
       user.phoneOTP = otp;
     } else {
