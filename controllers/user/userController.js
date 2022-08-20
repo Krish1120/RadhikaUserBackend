@@ -74,14 +74,8 @@ exports.postLogin = async (req, res, next) => {
         userId: user._id,
       },
     });
-    var otp = "";
-    if (phone === 7001406879 || "7001406879") {
-      otp = "123456";
-      user.phoneOTP = otp;
-    } else {
-      otp = generateOTP(6);
-      user.phoneOTP = otp;
-    }
+    otp = generateOTP(6);
+    user.phoneOTP = otp;
     await user.save();
     await fast2sms(
       {
