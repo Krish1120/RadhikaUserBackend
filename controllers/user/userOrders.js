@@ -1,6 +1,7 @@
 const express = require("express");
-// const razorpay=require('razorpay');
+const razorpay = require("razorpay");
 const dotenv = require("dotenv");
+const crypto = require("crypto");
 const orderModel = require("../../models/order");
 
 //create order.
@@ -72,7 +73,7 @@ exports.createOrder = async (req, res) => {
     };
     const order = await instance.orders.create(options);
     if (!order) return res.status(500).send("Some error occured");
-    res.send(order);
+    res.send({ order: order });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -83,25 +84,33 @@ exports.getRazorpay = (req, res) => {
   res.send({ key: process.env.RAZORPAY_KEY_ID });
 };
 
-//Pay order.
-// exports.payOrder=async(req,res)=>{
-//     try{
-//         const {amount,razorpayPaymentId,razorpayOrderId,razorpaySignature}=req.body;
-//         const newPayment=orderModel({
-//             isPaid:true,
-//             amount:amount,
-//             razorpay:{
-//                 orderId:razorpayOrderId,
-//                 paymentId:razorpayPaymentId,
-//                 signature:razorpaySignature,
-//             },
-//         });
-//         await newPayment.save();
-//         res.send({
-//             msg:'Payment successful.'
-//         });
-//     }catch(error){
-//         console.log(error);
-//         res.status(500).send(error);
-//     }
-// }
+exports.payOrder = async (req, res) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_SECRET)
+      .update(body.toString())
+      .digest("hex");
+
+    const isAuthentic = expectedSignature === razorpay_signature;
+    if (isAuthentic === true) {
+      console.log("authenticated");
+    }
+    // const newPayment = orderModel({
+    //   isPaid: true,
+    //   amount: amount,
+    //   razorpay: {
+    //     orderId: razorpayOrderId,
+    //     paymentId: razorpayPaymentId,
+    //     signature: razorpaySignature,
+    //   },
+    // });
+    // await newPayment.save();
+    res.status(200).send("Payment Successfull & Authenticated");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};

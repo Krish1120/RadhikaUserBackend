@@ -14,9 +14,9 @@ Route.put(
   orderController.cancelOrder
 );
 
-//Razorpay//
-// Route.post('/create-Order',orderController.createOrder);
-// Route.get('/get-razorpay-key',orderController.getRazorpay);
-// Route.post('/pay-Order',orderController.payOrder)
+//Razorpay
+Route.post("/create-Order", orderController.createOrder);
+Route.get("/get-razorpay-key", orderController.getRazorpay);
+Route.post("/pay-Order", orderController.payOrder);
 
 module.exports = Route;

@@ -79,6 +79,8 @@ app.use("/", userOrderRoute);
 
 const userMiscRoute = require("./routes/user/userMiscRoute");
 app.use("/", userMiscRoute);
+const couponRoute = require("./routes/user/couponRoute");
+app.use("/", couponRoute);
 
 //connect mongoDB.
 const dbDriver = process.env.MONGO_URI;

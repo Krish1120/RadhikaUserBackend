@@ -63,7 +63,7 @@ exports.postLogin = async (req, res, next) => {
     const user = await userModel.findOne({ phone });
 
     if (!user) {
-      next({ status: 400, message: "Phone number not found" });
+      res.status(400).json({ message: "Phone number not found" });
       return;
     }
 
@@ -77,13 +77,13 @@ exports.postLogin = async (req, res, next) => {
     otp = generateOTP(6);
     user.phoneOTP = otp;
     await user.save();
-    await fast2sms(
-      {
-        variables_values: otp,
-        contactNumber: user.phone,
-      },
-      next
-    );
+    // await fast2sms(
+    //   {
+    //     variables_values: otp,
+    //     contactNumber: user.phone,
+    //   },
+    //   next
+    // );
   } catch (error) {
     next(error);
   }
@@ -110,16 +110,11 @@ exports.postVerifyOTP = async (req, res, next) => {
   try {
     const { otp, userId } = req.body;
     const user = await userModel.findById(userId);
-    if (!user) {
-      next({ status: 400, message: "User not found" });
-      return;
-    }
 
     if (user.phoneOTP !== otp) {
-      next({ status: 400, message: "OTP mismatch." });
+      res.status(400).json({ message: "OTP mismatch." });
       return;
     }
-
     const token = jwt.sign(
       {
         userId: user._id,

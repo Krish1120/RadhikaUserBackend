@@ -9,7 +9,10 @@ const orderSchema = Schema(
     },
     products: [
       {
-        productID: {
+        product: {
+          type: Object,
+        },
+        size: {
           type: String,
         },
         quantity: {
@@ -18,6 +21,10 @@ const orderSchema = Schema(
         },
       },
     ],
+    isPaid: {
+      type: Boolean,
+      required: true,
+    },
     amount: {
       type: Number,
       required: true,
@@ -29,14 +36,20 @@ const orderSchema = Schema(
     status: {
       type: String,
     },
-    razorpay: {
-      orderId: String,
-      paymentID: String,
-      signature: String,
+    razorpay_order_id: {
+      type: String,
+      required: true,
+    },
+    razorpay_payment_id: {
+      type: String,
+      required: true,
+    },
+    razorpay_signature: {
+      type: String,
+      required: true,
     },
     reason: {
       type: String,
-      required: false,
     },
   },
   { timestamps: true }

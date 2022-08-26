@@ -20,7 +20,11 @@ const productSchema = Schema(
       required: true,
     },
     size: {
-      type: String,
+      type: Array,
+      required: true,
+    },
+    material: {
+      type: Array,
       required: true,
     },
     images: {
