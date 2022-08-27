@@ -72,18 +72,19 @@ exports.postLogin = async (req, res, next) => {
       message: "OTP sent to the registered phone number.",
       data: {
         userId: user._id,
+        userDetails: user,
       },
     });
     otp = generateOTP(6);
     user.phoneOTP = otp;
     await user.save();
-    await fast2sms(
-      {
-        variables_values: otp,
-        contactNumber: user.phone,
-      },
-      next
-    );
+    // await fast2sms(
+    //   {
+    //     variables_values: otp,
+    //     contactNumber: user.phone,
+    //   },
+    //   next
+    // );
   } catch (error) {
     next(error);
   }
