@@ -79,13 +79,13 @@ exports.postLogin = async (req, res, next) => {
     user.phoneOTP = otp;
     user.fcmToken = token;
     await user.save();
-    // await fast2sms(
-    //   {
-    //     variables_values: otp,
-    //     contactNumber: user.phone,
-    //   },
-    //   next
-    // );
+    await fast2sms(
+      {
+        variables_values: otp,
+        contactNumber: user.phone,
+      },
+      next
+    );
   } catch (error) {
     next(error);
   }
