@@ -51,6 +51,11 @@ Route.put(
   wishlistController.updateWishlist
 );
 Route.post(
+  "/updateProductQuantity/:id",
+  wishlistController.userAuth,
+  wishlistController.updateProductQuantity
+);
+Route.post(
   "/deleteWishlist/:id",
   wishlistController.userAuth,
   wishlistController.deleleWishlist

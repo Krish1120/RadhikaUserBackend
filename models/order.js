@@ -48,6 +48,14 @@ const orderSchema = Schema(
       type: String,
       required: true,
     },
+    shipRocketOrderId: {
+      type: String,
+      required: true,
+    },
+    shipRocketShipmentId: {
+      type: String,
+      required: true,
+    },
     reason: {
       type: String,
     },

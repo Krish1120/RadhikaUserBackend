@@ -114,6 +114,29 @@ exports.updateCart = async (req, res) => {
   }
 };
 
+//update cart product quantity.
+exports.updateProductQuantity = async (req, res) => {
+  try {
+    let Cart = await cartModel.findById(req.params.id);
+    let { productID, size, action } = req.body;
+    let itemIndex = Cart.products.findIndex(
+      (p) => p.product._id === productID && p.product.size === size
+    );
+    let productItem = Cart.products[itemIndex];
+    if (action === "plus") {
+      productItem.quantity = productItem.quantity + 1;
+      Cart.products[itemIndex] = productItem;
+    } else {
+      productItem.quantity = productItem.quantity - 1;
+      Cart.products[itemIndex] = productItem;
+    }
+    Cart.save();
+    res.status(200).json("CartItem quantity Updated.");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 //delete cart.
 exports.deleleCart = async (req, res) => {
   try {
@@ -124,7 +147,7 @@ exports.deleleCart = async (req, res) => {
     );
     Cart.products.splice(itemIndex, 1);
     Cart.save();
-    res.status(200).json("CartItem has been deleted...");
+    res.status(200).json("CartItem has been deleted.");
   } catch (err) {
     res.status(500).json(err);
   }

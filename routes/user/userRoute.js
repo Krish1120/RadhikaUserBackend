@@ -11,5 +11,6 @@ Route.post("/postLogin", userController.postLogin);
 Route.get("/verifyOTP/:id", userController.verifyOTP);
 Route.post("/postVerifyOTP", userController.postVerifyOTP);
 Route.get("/logout/:id", userController.logout);
+Route.put("/editProfile/:id", userController.editProfile);
 
 module.exports = Route;

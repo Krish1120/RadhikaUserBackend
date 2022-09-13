@@ -59,7 +59,7 @@ exports.login = (req, res) => {
 //user post login page view controller.
 exports.postLogin = async (req, res, next) => {
   try {
-    const { phone } = req.body;
+    const { phone, token } = req.body;
     const user = await userModel.findOne({ phone });
 
     if (!user) {
@@ -77,14 +77,15 @@ exports.postLogin = async (req, res, next) => {
     });
     otp = generateOTP(6);
     user.phoneOTP = otp;
+    user.fcmToken = token;
     await user.save();
-    await fast2sms(
-      {
-        variables_values: otp,
-        contactNumber: user.phone,
-      },
-      next
-    );
+    // await fast2sms(
+    //   {
+    //     variables_values: otp,
+    //     contactNumber: user.phone,
+    //   },
+    //   next
+    // );
   } catch (error) {
     next(error);
   }
@@ -137,6 +138,35 @@ exports.postVerifyOTP = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+// Edit Profile
+exports.editProfile = async (req, res, next) => {
+  const userId = req.params.id;
+  const { name, phone, email, address, state, pincode } = req.body;
+  const user = await userModel
+    .findByIdAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          name,
+          phone,
+          email,
+          address,
+          state,
+          pincode,
+        },
+      }
+    )
+    .then(async (result) => {
+      const updatedUser = await userModel.findOne({ phone });
+      res.status(200).json({
+        user: updatedUser,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
 };
 
 //user logout.

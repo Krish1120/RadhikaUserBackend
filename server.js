@@ -86,7 +86,7 @@ app.use("/", couponRoute);
 const dbDriver = process.env.MONGO_URI;
 
 //connect ports.
-const port = process.env.PORT || 50020;
+const port = process.env.PORT || 50010;
 mongoose
   .connect(dbDriver, {
     useNewUrlParser: true,
