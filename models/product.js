@@ -36,8 +36,8 @@ const productSchema = Schema(
       required: true,
     },
     status: {
-      type: Boolean,
-      default: true,
+      type: String,
+      required: true,
     },
     createdAt: {
       type: Date,
