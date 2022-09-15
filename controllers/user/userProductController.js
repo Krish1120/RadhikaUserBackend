@@ -85,6 +85,16 @@ exports.addToCart = async (req, res) => {
 exports.showCart = async (req, res) => {
   try {
     const cart = await cartModel.find({ userID: req.params.userId });
+    if (cart[0].products.length > 0) {
+      for (let i = 0; i < cart[0].products.length; i++) {
+        let cartItem = cart[0].products[i].product;
+        let prode = await productModel.findOne({ _id: cartItem._id });
+
+        if (cartItem.status !== prode.status) {
+          cart[0].products.splice(i, 1);
+        }
+      }
+    }
     res.status(200).json(cart);
   } catch (err) {
     res.status(500).json(err);
@@ -173,6 +183,17 @@ exports.addToWishlist = async (req, res) => {
 exports.showWishlist = async (req, res) => {
   try {
     const wishlist = await wishlistModel.find({ userID: req.params.userId });
+    if (wishlist[0].products.length > 0) {
+      for (let i = 0; i < wishlist[0].products.length; i++) {
+        let prode = await productModel.findOne({
+          _id: wishlist[0].products[i].product._id,
+        });
+
+        if (wishlist[0].products[i].product.status !== prode.status) {
+          wishlist[0].products[i].product.status = prode.status;
+        }
+      }
+    }
     res.status(200).json(wishlist);
   } catch (err) {
     res.status(500).json(err);
