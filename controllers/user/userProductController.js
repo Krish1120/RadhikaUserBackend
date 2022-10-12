@@ -89,8 +89,11 @@ exports.showCart = async (req, res) => {
       for (let i = 0; i < cart[0].products.length; i++) {
         let cartItem = cart[0].products[i].product;
         let prode = await productModel.findOne({ _id: cartItem._id });
-
-        if (cartItem.status !== prode.status) {
+        let sizes = prode.size[0].split(",");
+        if (
+          !sizes.includes(cartItem.size) ||
+          cartItem.status !== prode.status
+        ) {
           cart[0].products.splice(i, 1);
         }
       }
@@ -182,7 +185,7 @@ exports.addToWishlist = async (req, res) => {
 //show wishlist.
 exports.showWishlist = async (req, res) => {
   try {
-    const wishlist = await wishlistModel.find({ userID: req.params.userId });
+    let wishlist = await wishlistModel.find({ userID: req.params.userId });
     if (wishlist[0].products.length > 0) {
       for (let i = 0; i < wishlist[0].products.length; i++) {
         let prode = await productModel.findOne({
